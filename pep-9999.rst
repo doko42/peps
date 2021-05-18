@@ -1,0 +1,163 @@
+PEP: 9999
+Title: 
+Author: Matthias Klose <oko@ubuntu.com>
+Status: DRAFT
+Type: Standards Track
+Content-Type: text/x-rst
+Created: 18-May-2021
+Python-Version: 3.10
+Post-History: 2021-05-18
+
+
+Deferral Notice
+===============
+
+This PEP is in pre-DRAFT status.
+
+
+Abstract
+========
+
+This PEP proposes a policy for handling Python modules installed into
+"site directories" by different installers.
+
+
+Terminology
+===========
+
+Define vendor.
+
+Define site-packages, dist/vendor-packages.
+
+Define "curated set of Python modules", installed by vendor installers.
+
+Define vendor Python, Python build and the curated set.
+
+
+Rationale
+=========
+
+CPython builds that vendors are shipping with a curated set of Python
+modules should be able to be used with modules installed by other
+installers (like pip) without affecting the vendor Python.
+
+* Extension of the curated set of Python modules might be necessary
+  when a module is only available by other installers.
+
+* The original curated set of Python modules should be unaffected by
+  modules installed by other installers.
+
+Proposal
+========
+
+
+* Add an additional location on sys.path, where modules are installed
+  by the vendor installer.
+
+* Define a policy for installers for both site-packages and
+  dist/vendor-packages how installations, upgrades and removals are
+  handled in these locacations.
+
+* TODO: how to expose the two directories to installers?
+
+
+Intended use
+------------
+
+* Use on a desktop/server system (typically Linux desktop or server
+  installation).
+
+* Use in a virtual environment. Not affecting the curated set of
+  Python modules.
+
+  * venv without site-packages and dist-packages
+
+  * venv just with dist-packages
+
+  * venv just with site-packages (not sure if that's really a valid
+    use case)
+  
+  * venv with both dist-packages and site-packages.
+
+* Geoff's use case, azure-cli use case?
+
+
+pyinstall policy files
+----------------------
+
+
+Non-goals
+---------
+
+We identified some issues which are not exactly related, not
+addressing these in the PEP (some of the patches we identified should
+go here).
+
+TODO: Use case of just using *one* module from dist/vendor-packages,
+most likely in a venv (e.g. pyqt5).
+
+
+Internal details
+================
+
+TODO: needed?
+
+
+Discussion
+==========
+
+Separate CPython installations
+------------------------------
+
+Not mixing modules from two installers would avoid issues, however
+
+ * CPython upstream doesn't provide binary CPython distributions for
+   all major platforms, or different architectures for some platforms.
+
+ * Provission of a separate vendor CPython failed in the past.
+   https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/SEFUWW4XZBTVOAQ36XOJQ72PIICMFOSN/
+
+Doesn't cover all use cases.
+
+
+Mixing Python modules from different installers
+-----------------------------------------------
+
+Real world use
+
+
+Open issues
+===========
+
+* What does python -S mean for dist/vendor-packages?
+
+* Two ...
+
+
+Implementation
+==============
+
+A draft implementation is ...
+
+
+References
+==========
+
+.. [#xxx] https://bugs.python.org/issueNNN
+
+
+Copyright
+=========
+
+This document has been placed in the public domain.
+
+
+
+..
+   Local Variables:
+   mode: indented-text
+   indent-tabs-mode: nil
+   sentence-end-double-space: t
+   fill-column: 70
+   coding: utf-8
+   End:
